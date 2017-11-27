@@ -15,7 +15,7 @@ RUN     apk add --no-cache libpq unzip wget ca-certificates \
     && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
     && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk \
     && apk --no-cache add glibc-${GLIBC_VERSION}.apk \
-    && apk --no-cache add glibc-bin-${GLIBC_VERSION}.apk \
+    && apk --no-cache add glibc-bin-${GLIBC_VERSION}.apk
 
 WORKDIR /opt/oracle/
 RUN     set -x \
