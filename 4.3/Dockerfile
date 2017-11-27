@@ -1,6 +1,15 @@
 FROM php:7.0-alpine
 
 STOPSIGNAL SIGINT
+ENV GLIBC_VERSION=2.23-r3
+
+
+&& wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/sgerrand.rsa.pub \
+&& wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
+&& wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk \
+&& apk --no-cache add glibc-${GLIBC_VERSION}.apk \
+&& apk --no-cache add glibc-bin-${GLIBC_VERSION}.apk \
+
 
 RUN     addgroup -S adminer \
 &&      adduser -S -G adminer adminer \
@@ -9,10 +18,15 @@ RUN     addgroup -S adminer \
 &&      mkdir -p /var/www/html/plugins-enabled \
 &&      chown -R adminer:adminer /var/www/html
 
-RUN     apk add --no-cache libpq unzip
+RUN     apk add --no-cache libpq unzip wget ca-certificates
 
 WORKDIR /opt/oracle/
 RUN     set -x \
+    && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/sgerrand.rsa.pub \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk \
+    && apk --no-cache add glibc-${GLIBC_VERSION}.apk \
+    && apk --no-cache add glibc-bin-${GLIBC_VERSION}.apk \
     && curl -fsSL http://public-1254427195.coscd.myqcloud.com/instantclient/instantclient-basic-linux.x64-12.2.0.1.0.zip -o instantclient-basic-linux.x64-12.2.0.1.0.zip \
     && curl -fsSL http://public-1254427195.coscd.myqcloud.com/instantclient/instantclient-sdk-linux.x64-12.2.0.1.0.zip -o instantclient-sdk-linux.x64-12.2.0.1.0.zip \
     && unzip instantclient-basic-linux.x64-12.2.0.1.0.zip \
